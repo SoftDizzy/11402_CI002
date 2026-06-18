@@ -1,0 +1,29 @@
+#include <iostream>
+
+using namespace std;
+
+// A Bonus
+
+int main()
+{
+    int n;
+
+    while ( cin >> n )
+    {
+        if ( n == 0 )
+        {
+            break;
+        }
+
+        int sum = 0;
+
+        for ( int i = 1; i <= n; i++ )
+        {
+            sum += i * i;
+        }
+
+        cout << sum << endl;
+    }
+
+    return 0;
+}

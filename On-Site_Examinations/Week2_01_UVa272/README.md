@@ -11,7 +11,7 @@ Date: 2026/03/03
 Theme: Strings, formatting
 Category: On-site Easy
 Source Code (Fail): No failed version was saved
-Source Code (Correct/Accepted): `src/4_272.cpp`
+Source Code (Correct/Accepted): `src/13_272.cpp`
 
 ## 2. Problem Statement in My Own Words
 
@@ -114,18 +114,6 @@ END
 ```cpp
 No failed version was saved.
 ```
-
-Why it failed:
-
-* No failed version was saved.
-
-如果有失敗版本，這題常見錯誤可能是：
-
-* 使用 `cin >> s`，導致空白被忽略
-* 把所有 `"` 都換成同一種符號
-* 每一行都重新把狀態設回開引號，導致跨行的引號判斷錯誤
-* 忘記在每一行結束後輸出換行
-* 沒有正確輸出反引號 ```` 和單引號 `''`
 
 ### Correct Code
 

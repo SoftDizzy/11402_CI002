@@ -1,129 +1,152 @@
 # UVa 12149 - Feynman
 
-Use this template to review your coding performance for each problem. Write clearly and use your own words.
-
 ## 1. Problem Information
 
-Platform: UVa  
-Problem ID: 12149  
-Problem Title: Feynman  
-Problem Link: https://onlinejudge.org/external/121/12149.pdf  
-Week: 3  
-Date: 2026/03/10  
-Theme: Math + corner cases  
-Category: On-site Easy Bonus  
-Source Code (Fail): `src/[fail-version-file].cpp`  
-Source Code (Correct/Accepted): `src/[accepted-version-file].cpp`
+Platform: UVa
+Problem ID: 12149
+Problem Title: Feynman
+Problem Link: https://onlinejudge.org/external/121/12149.pdf
+Week: 3
+Date: 2026/03/10
+Theme: Math + corner cases
+Category: On-site Easy (Bonus)
+Source Code (Fail): No failed version was saved
+Source Code (Correct/Accepted): `src/12149.cpp`
 
 ## 2. Problem Statement in My Own Words
 
-Describe the problem in your own language. Do not copy the original statement.
+* 這題會給一個整數 `n`，代表有一個 `n x n` 的大正方形。我要算出這個大正方形裡面總共有幾個不同大小的正方形。
 
 ### What is the input?
 
-[Write the input format here.]
+* 輸入有很多個整數 `n`。
+* 當 `n = 0` 時，代表輸入結束，不需要輸出。
 
 ### What is the expected output?
 
-[Write the output format here.]
+* 對每一個 `n`，輸出 `n x n` 裡面所有正方形的總數。
 
 ### What are the main rules or constraints?
 
-[Write important rules, limitations, or special cases here.]
+* `1 x 1` 的正方形有很多個。
+* `2 x 2`、`3 x 3` 這些不同大小的正方形也都要算進去。
+* 輸入 `0` 時要停止。
+* 每筆答案輸出一行。
 
 ### What is the core task you must solve?
 
-[Write the main goal of the problem here.]
+* 核心任務是計算：
+
+```text
+1^2 + 2^2 + 3^2 + ... + n^2
+```
+
+這個總和就是 `n x n` 正方形裡面所有小正方形的數量。
 
 ## 3. Thinking Logic and Solution Strategy
 
-Explain how you thought about the problem and how you decided on your final approach.
-
 ### Initial Thoughts
 
-What was your first idea?
-
-[Write your first idea here.]
-
-What difficulty did you notice at the beginning?
-
-[Write the first difficulty you noticed here.]
+* 一開始看到題目，我原本以為要真的去數每個格子裡面的正方形。
+* 後來發現其實有規律，因為不同大小的正方形數量可以用平方和表示。
+* 例如 `n = 3` 時，答案是 `1^2 + 2^2 + 3^2 = 14`。
 
 ### Final Strategy
 
-What method did you finally use?
-
-[Write your final method here.]
-
-Why does this method work?
-
-[Explain why the approach can solve the problem correctly.]
+* 每次讀入一個 `n`。
+* 如果 `n == 0`，就結束程式。
+* 設定 `sum = 0`。
+* 從 `1` 加到 `n`，每次把 `i * i` 加進 `sum`。
+* 最後輸出 `sum`。
 
 What edge cases did you consider?
 
-- [Edge case 1]
-- [Edge case 2]
-- [Edge case 3]
+* 輸入 `0` 時不能輸出
+* `n = 1` 時答案是 1
+* 有多筆輸入，要一直讀到 0
+* 每筆輸出都要換行
+* 不能只算 `n * n`，因為還要包含其他大小的正方形
 
 ## 4. Pseudocode
 
-Write the main steps of your solution before showing the actual code.
 
 ```text
 START
-1. 
-2. 
-3. 
-4. 
+1. While input has an integer n:
+2.     If n == 0:
+3.         Stop the program.
+4.     Set sum = 0.
+5.     For i from 1 to n:
+6.         Add i * i to sum.
+7.     Print sum.
 END
 ```
 
 ## 5. Fail Code vs Correct Code
 
-Show the code that failed first, then show the corrected version.
-
 ### Fail Code
 
 ```cpp
-// Paste the incorrect, incomplete, or rejected version here.
-// If no failed version was saved, write: No failed version was saved.
+No failed version was saved.
 ```
-
-Why it failed:
-
-[Explain the reason for the wrong answer, compile error, runtime error, or time limit exceeded.]
 
 ### Correct Code
 
 ```cpp
-// Paste the corrected or accepted version here.
+#include <iostream>
+
+using namespace std;
+
+// A Bonus
+
+int main()
+{
+    int n;
+
+    while ( cin >> n )
+    {
+        if ( n == 0 )
+        {
+            break;
+        }
+
+        int sum = 0;
+
+        for ( int i = 1; i <= n; i++ )
+        {
+            sum += i * i;
+        }
+
+        cout << sum << endl;
+    }
+
+    return 0;
+}
 ```
 
 Why it works:
 
-[Explain why the corrected code solves the problem.]
+* 程式可以一直讀取 `n`，直到遇到 `0` 才停止。
+* 對每個 `n`，用迴圈加總 `1^2` 到 `n^2`。
+* 這個平方和剛好就是所有不同大小正方形的總數。
+* 每筆答案都有獨立輸出一行，符合題目格式。
 
 ## 6. Difference and Reflection
 
 ### Key Differences
 
-| Item | Fail Code | Correct Code |
-|---|---|---|
-| Logic |  |  |
-| Edge Cases |  |  |
-| Output Handling |  |  |
-| Other |  |  |
+| Item            | Fail Code        | Correct Code                   |
+| --------------- | ---------------- | ------------------------------ |
+| Logic           | 可能只算 `n * n`。    | 使用平方和 `1^2 + 2^2 + ... + n^2`。 |
+| Edge Cases      | 可能沒有處理 `n == 0`。 | 遇到 `0` 就停止，不輸出。                |
+| Output Handling | 可能只處理一筆資料。       | 可以處理多筆輸入，每筆輸出一行。               |
+| Other           | 可能沒有看出題目的數學規律。   | 用迴圈把每個大小的正方形數量加起來。             |
 
 ### Reflection
 
-What mistake did you make?
+這題主要是在找規律。
+一開始如果只想到 `n * n`，就會只算到最小的正方形，答案會少很多。
 
-[Write your mistake here.]
+我學到這種數格子的題目，可以先用小數字畫圖找規律。
+像 `n = 1, 2, 3` 先算一次，就比較容易發現答案是平方和。
 
-What did you learn from debugging this problem?
-
-[Write what you learned here.]
-
-If you solve a similar problem again, what will you do better?
-
-[Write how you can improve next time.]
