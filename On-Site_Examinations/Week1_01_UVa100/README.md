@@ -1,7 +1,5 @@
 # UVa 100 - The 3n + 1 Problem
 
-Use this template to review your coding performance for each problem. Write clearly and use your own words.
-
 ## 1. Problem Information
 
 Platform: UVa  
@@ -81,7 +79,6 @@ END
 ## 5. Fail Code vs Correct Code
 
 
-
 ### Fail Code
 
 ```cpp
@@ -137,7 +134,7 @@ int main()
 
 Why it works:
 
-正確版本可以用 EOF 持續讀取多組輸入。
+- 正確版本可以用 EOF 持續讀取多組輸入。
 程式會先保留原本的 i 和 j，確保輸出格式正確。
 接著用較小值和較大值決定真正要計算的範圍。
 對範圍內每個數字計算 cycle length，並記錄最大值。
@@ -147,7 +144,12 @@ Why it works:
 
 ### Key Differences
 
-直接使用 i j 去做，沒有處理邊界問題及正確計算範圍。
+| Item | Fail Code | Correct Code |
+|---|---|---|
+| Logic | 可能直接從 i 跑到 j，沒有處理反向區間。 | 使用 min() 和 max() 找出正確計算範圍。 |
+| Edge Cases | 可能忽略 i > j 或 i == j。 | 可以處理正向、反向、單一數字區間。 |
+| Output Handling | 可能輸出排序後的範圍。 | 保留原本輸入順序輸出。 |
+| Other | cycle length 計算可能少算起始數字。 | cycle length 從 1 開始計算，包含起始數字。 |
 
 ### Reflection
 
