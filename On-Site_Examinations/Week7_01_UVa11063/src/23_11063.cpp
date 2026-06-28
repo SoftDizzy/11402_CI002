@@ -24,7 +24,7 @@ int main()
 
     
 
-        // 條件一：檢查是否為正整數且嚴格遞增
+        // 檢查是否為正整數且嚴格遞增
         for ( int i = 0; i < n - 1; i++ )
         {
             if ( v[i] >= v[i+1] )
@@ -33,7 +33,7 @@ int main()
             }
         }
 
-        // 條件二：檢查所有 bi + bj 是否重複
+        // 檢查所有 bi + bj 是否重複
    
         vector<bool> used(20005, false);
 
