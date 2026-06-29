@@ -1,129 +1,195 @@
 # UVa 11559 - Event Planning
 
-Use this template to review your coding performance for each problem. Write clearly and use your own words.
-
 ## 1. Problem Information
 
-Platform: UVa  
-Problem ID: 11559  
-Problem Title: Event Planning  
-Problem Link: https://onlinejudge.org/external/115/11559.pdf  
-Week: 9  
-Date: 2026/04/21  
-Theme: Prefix sums / difference arrays  
-Category: On-site Easy  
-Source Code (Fail): `src/[fail-version-file].cpp`  
-Source Code (Correct/Accepted): `src/[accepted-version-file].cpp`
+Platform: UVa
+Problem ID: 11559
+Problem Title: Event Planning
+Problem Link: https://onlinejudge.org/external/115/11559.pdf
+Week: 9
+Date: 2026/04/21
+Theme: Prefix sums / difference arrays
+Category: On-site Easy
+Source Code (Fail): No failed version was saved
+Source Code (Correct/Accepted): `src/11559.cpp`
 
 ## 2. Problem Statement in My Own Words
 
-Describe the problem in your own language. Do not copy the original statement.
+* 這題要幫一群人找飯店。題目會給人數、預算、飯店數量和可選週數，我要找出有足夠床位而且價格不超過預算的最便宜方案。
 
 ### What is the input?
 
-[Write the input format here.]
+* 輸入有多組資料。
+* 每組資料先輸入四個整數 `n b h w`。
+
+  * `n` 是參加人數。
+  * `b` 是總預算。
+  * `h` 是飯店數量。
+  * `w` 是可選週數。
+* 接著每間飯店會先給每人價格 `price`。
+* 再給 `w` 個整數，代表每一週可用床位數。
 
 ### What is the expected output?
 
-[Write the output format here.]
+* 如果有飯店符合條件，就輸出最小總花費。
+* 如果沒有任何飯店符合條件，就輸出：
+
+```text
+stay home
+```
 
 ### What are the main rules or constraints?
 
-[Write important rules, limitations, or special cases here.]
+* 總花費是 `n * price`。
+* 飯店必須至少有一週的床位數 `beds >= n`。
+* 總花費不能超過預算 `b`。
+* 要從所有可行飯店中找最便宜的價格。
+* 輸入要讀到 EOF。
 
 ### What is the core task you must solve?
 
-[Write the main goal of the problem here.]
+* 檢查每一間飯店是否有足夠床位且不超過預算，並記錄最小可行花費。
 
 ## 3. Thinking Logic and Solution Strategy
 
-Explain how you thought about the problem and how you decided on your final approach.
-
 ### Initial Thoughts
 
-What was your first idea?
-
-[Write your first idea here.]
-
-What difficulty did you notice at the beginning?
-
-[Write the first difficulty you noticed here.]
+* 一開始我覺得這題就是把每間飯店都檢查一次。
+* 每間飯店有一個固定價格，然後有很多週的床位數。
+* 只要其中一週床位夠，就可以考慮這間飯店。
 
 ### Final Strategy
 
-What method did you finally use?
+* 每組資料讀入 `n, b, h, w`。
+* 設定 `best = b + 1`，代表目前還沒有找到可行答案。
+* 對每一間飯店：
 
-[Write your final method here.]
-
-Why does this method work?
-
-[Explain why the approach can solve the problem correctly.]
+  * 讀入每人價格 `price`。
+  * 檢查接下來 `w` 週是否有任一週 `beds >= n`。
+  * 如果有足夠床位，就計算 `cost = n * price`。
+  * 如果 `cost <= b`，就更新最小值 `best`。
+* 最後如果 `best <= b`，輸出 `best`。
+* 否則輸出 `stay home`。
 
 What edge cases did you consider?
 
-- [Edge case 1]
-- [Edge case 2]
-- [Edge case 3]
+* 沒有任何飯店有足夠床位
+* 有床位但超過預算
+* 多間飯店都可行，要選最便宜的
+* 某間飯店只要有一週床位夠就可以
+* 有多組輸入，要讀到 EOF
 
 ## 4. Pseudocode
 
-Write the main steps of your solution before showing the actual code.
-
 ```text
 START
-1. 
-2. 
-3. 
-4. 
+1. While input has n, b, h, w:
+2.     Set best = b + 1.
+3.     Repeat h times:
+4.         Read price.
+5.         Set enoughBeds = false.
+6.         Repeat w times:
+7.             Read beds.
+8.             If beds >= n:
+9.                 Set enoughBeds = true.
+10.        cost = n * price.
+11.        If enoughBeds is true and cost <= b:
+12.            best = minimum of best and cost.
+13.    If best <= b:
+14.        Print best.
+15.    Else:
+16.        Print "stay home".
 END
 ```
 
 ## 5. Fail Code vs Correct Code
 
-Show the code that failed first, then show the corrected version.
-
 ### Fail Code
 
 ```cpp
-// Paste the incorrect, incomplete, or rejected version here.
-// If no failed version was saved, write: No failed version was saved.
+No failed version was saved.
 ```
-
-Why it failed:
-
-[Explain the reason for the wrong answer, compile error, runtime error, or time limit exceeded.]
 
 ### Correct Code
 
 ```cpp
-// Paste the corrected or accepted version here.
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+// A
+
+int main()
+{
+    int n, b, h, w;
+
+    while (cin >> n >> b >> h >> w)
+    {
+        int best = b + 1;
+
+        for (int i = 0; i < h; i++)
+        {
+            int price;
+            cin >> price;
+
+            bool enoughBeds = false;
+
+            for (int j = 0; j < w; j++)
+            {
+                int beds;
+                cin >> beds;
+
+                if (beds >= n)
+                {
+                    enoughBeds = true;
+                }
+            }
+
+            int cost = n * price;
+
+            if (enoughBeds && cost <= b)
+            {
+                best = min(best, cost);
+            }
+        }
+
+        if (best <= b)
+        {
+            cout << best << endl;
+        }
+        else
+        {
+            cout << "stay home" << endl;
+        }
+    }
+
+    return 0;
+}
 ```
 
 Why it works:
 
-[Explain why the corrected code solves the problem.]
+* 程式會讀到 EOF，可以處理多組資料。
+* 每間飯店都會檢查所有週數，只要其中一週床位足夠就可以。
+* `cost = n * price` 用來算總花費。
+* 如果有床位且預算足夠，就用 `min()` 更新最便宜方案。
+* 如果最後沒有任何可行方案，就輸出 `stay home`。
 
 ## 6. Difference and Reflection
 
 ### Key Differences
 
-| Item | Fail Code | Correct Code |
-|---|---|---|
-| Logic |  |  |
-| Edge Cases |  |  |
-| Output Handling |  |  |
-| Other |  |  |
+| Item            | Fail Code       | Correct Code        |
+| --------------- | --------------- | ------------------- |
+| Logic           | 可能只檢查一間或一週。     | 檢查每間飯店的所有週數。        |
+| Edge Cases      | 可能有床位但預算不夠也算進去。 | 同時檢查床位和預算。          |
+| Output Handling | 可能大小寫或文字錯。      | 正確輸出 `stay home`。   |
+| Other           | 可能沒有找最小花費。      | 用 `best` 記錄目前最便宜方案。 |
 
 ### Reflection
 
-What mistake did you make?
+我覺得重點是要把「床位夠」和「預算夠」兩個條件分開檢查。
 
-[Write your mistake here.]
-
-What did you learn from debugging this problem?
-
-[Write what you learned here.]
-
-If you solve a similar problem again, what will you do better?
-
-[Write how you can improve next time.]
+某間飯店只要有一週床位夠就可以，不是每一週都要夠。
+下次遇到這種多條件篩選的題目，我會先把每個條件列出來，再一個一個判斷。

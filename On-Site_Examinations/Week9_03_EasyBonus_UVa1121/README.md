@@ -1,129 +1,188 @@
 # UVa 1121 - Subsequence
 
-Use this template to review your coding performance for each problem. Write clearly and use your own words.
-
 ## 1. Problem Information
 
-Platform: UVa  
-Problem ID: 1121  
-Problem Title: Subsequence  
-Problem Link: https://onlinejudge.org/external/11/1121.pdf  
-Week: 9  
-Date: 2026/04/21  
-Theme: Prefix sums / difference arrays  
-Category: On-site Easy Bonus  
-Source Code (Fail): `src/[fail-version-file].cpp`  
-Source Code (Correct/Accepted): `src/[accepted-version-file].cpp`
+Platform: UVa
+Problem ID: 1121
+Problem Title: Subsequence
+Problem Link: https://onlinejudge.org/external/11/1121.pdf
+Week: 9
+Date: 2026/04/21
+Theme: Prefix sums / difference arrays
+Category: On-site Easy (Bonus)
+Source Code (Fail): No failed version was saved
+Source Code (Correct/Accepted): `src/1121.cpp`
 
 ## 2. Problem Statement in My Own Words
 
-Describe the problem in your own language. Do not copy the original statement.
+* 這題會給一串正整數和一個目標值 `s`，我要找出最短的連續子序列，使它的總和大於或等於 `s`。
 
 ### What is the input?
 
-[Write the input format here.]
+* 輸入有多組資料。
+* 每組資料先輸入兩個整數 `n` 和 `s`。
+
+  * `n` 是數列長度。
+  * `s` 是目標總和。
+* 接著輸入 `n` 個正整數。
 
 ### What is the expected output?
 
-[Write the output format here.]
+* 輸出最短連續子序列的長度。
+* 如果沒有任何一段連續子序列總和可以達到 `s`，就輸出 `0`。
+* 每組答案輸出一行。
 
 ### What are the main rules or constraints?
 
-[Write important rules, limitations, or special cases here.]
+* 子序列必須是連續的。
+* 總和要大於或等於 `s`。
+* 要找的是最短長度。
+* 數列中的數字都是正整數，所以可以用 sliding window。
+* 輸入要讀到 EOF。
 
 ### What is the core task you must solve?
 
-[Write the main goal of the problem here.]
+* 用兩個指標維持一段連續區間，找出總和達到 `s` 的最短長度。
 
 ## 3. Thinking Logic and Solution Strategy
 
-Explain how you thought about the problem and how you decided on your final approach.
-
 ### Initial Thoughts
 
-What was your first idea?
-
-[Write your first idea here.]
-
-What difficulty did you notice at the beginning?
-
-[Write the first difficulty you noticed here.]
+* 一開始可以用雙層迴圈枚舉所有區間，但這樣會比較慢。
+* 因為題目中的數字都是正數，所以當右邊界往右移時，總和只會變大。
+* 當總和已經大於等於 `s` 時，就可以嘗試把左邊界往右移，看看能不能縮短長度。
 
 ### Final Strategy
 
-What method did you finally use?
-
-[Write your final method here.]
-
-Why does this method work?
-
-[Explain why the approach can solve the problem correctly.]
+* 用 `left` 和 `right` 表示目前視窗範圍。
+* `right` 每次往右加入一個數字，讓 `sum` 增加。
+* 當 `sum >= s` 時，代表目前區間符合條件。
+* 此時更新最短長度，然後把 `left` 的數字移出視窗，繼續嘗試縮短。
+* 如果最後沒有找到符合條件的區間，就輸出 `0`。
 
 What edge cases did you consider?
 
-- [Edge case 1]
-- [Edge case 2]
-- [Edge case 3]
+* 沒有任何區間總和達到 `s`
+* 單一元素就大於或等於 `s`
+* 最短答案在中間，不一定從開頭開始
+* 有多組輸入，要讀到 EOF
+* 因為都是正數，所以 sliding window 才適用
 
 ## 4. Pseudocode
 
-Write the main steps of your solution before showing the actual code.
-
-```text
+```text id="ym5d4b"
 START
-1. 
-2. 
-3. 
-4. 
+1. While input has n and s:
+2.     Read n numbers into vector v.
+3.     Set left = 0.
+4.     Set sum = 0.
+5.     Set answer = infinity.
+6.     For right from 0 to n - 1:
+7.         Add v[right] to sum.
+8.         While sum >= s:
+9.             length = right - left + 1.
+10.            Update answer with smaller length.
+11.            Subtract v[left] from sum.
+12.            Move left to the right.
+13.    If answer is still infinity:
+14.        Print 0.
+15.    Else:
+16.        Print answer.
 END
 ```
 
 ## 5. Fail Code vs Correct Code
 
-Show the code that failed first, then show the corrected version.
-
 ### Fail Code
 
-```cpp
-// Paste the incorrect, incomplete, or rejected version here.
-// If no failed version was saved, write: No failed version was saved.
+```cpp 
+No failed version was saved.
 ```
-
-Why it failed:
-
-[Explain the reason for the wrong answer, compile error, runtime error, or time limit exceeded.]
 
 ### Correct Code
 
-```cpp
-// Paste the corrected or accepted version here.
+```cpp 
+#include <iostream>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+// A Bonus
+
+int main()
+{
+    int n, s;
+
+    while (cin >> n >> s)
+    {
+        vector<int> v(n);
+
+        for (int i = 0; i < n; i++)
+        {
+            cin >> v[i];
+        }
+
+        int left = 0;
+        int sum = 0;
+        int answer = INT_MAX;
+
+        for (int right = 0; right < n; right++)
+        {
+            sum += v[right];
+
+            while (sum >= s)
+            {
+                int length = right - left + 1;
+
+                if (length < answer)
+                {
+                    answer = length;
+                }
+
+                sum -= v[left];
+                left++;
+            }
+        }
+
+        if (answer == INT_MAX)
+        {
+            cout << 0 << endl;
+        }
+        else
+        {
+            cout << answer << endl;
+        }
+    }
+
+    return 0;
+}
 ```
 
 Why it works:
 
-[Explain why the corrected code solves the problem.]
+* 程式使用 `left` 和 `right` 維持目前的連續區間。
+* `right` 往右移時，把新數字加入 `sum`。
+* 當 `sum >= s` 時，代表目前區間符合條件，就更新最短長度。
+* 接著移動 `left`，嘗試縮短區間。
+* 因為數字都是正數，所以這樣移動視窗不會漏掉答案。
+* 如果最後沒有找到任何符合條件的區間，就輸出 `0`。
 
 ## 6. Difference and Reflection
 
 ### Key Differences
 
-| Item | Fail Code | Correct Code |
-|---|---|---|
-| Logic |  |  |
-| Edge Cases |  |  |
-| Output Handling |  |  |
-| Other |  |  |
+| Item            | Fail Code              | Correct Code              |
+| --------------- | ---------------------- | ------------------------- |
+| Logic           | 可能枚舉所有區間。              | 使用 sliding window 維持連續區間。 |
+| Edge Cases      | 可能沒處理找不到答案。            | 如果 `answer` 沒更新，就輸出 `0`。  |
+| Output Handling | 可能只找到第一個可行區間就停止。       | 持續縮短視窗，找最短長度。             |
+| Other           | 可能把 subsequence 當成不連續。 | 這題處理的是連續區間。               |
 
 ### Reflection
 
-What mistake did you make?
+因為所有數字都是正數，所以右邊界往右會讓總和變大，左邊界往右會讓總和變小。
 
-[Write your mistake here.]
+我覺得最容易錯的是找到一個符合條件的區間後就停下來。
+其實還要繼續移動 `left`，看看能不能找到更短的長度。
 
-What did you learn from debugging this problem?
-
-[Write what you learned here.]
-
-If you solve a similar problem again, what will you do better?
-
-[Write how you can improve next time.]
